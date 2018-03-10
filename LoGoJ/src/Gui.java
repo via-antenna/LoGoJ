@@ -201,6 +201,48 @@ public class Gui extends JFrame {
                     i++;
                 }
 
+                double n1;
+                double n2;
+                double ans;
+                int startReplace = 0;
+                int endReplace = 0;
+                
+                for (int i2 = 0; i2 < nextText.length(); i2++)
+                {
+                    if (nextText.charAt(i2) == '/' || nextText.charAt(i2) == '+' || nextText.charAt(i2) == '*' || nextText.charAt(i2) == '+')
+                    {
+                        for (int i3 = i2; nextText.charAt(i3) != ' '; i3--)
+                            startReplace = i3;
+                        for (int i3 = i2; nextText.charAt(i3) != ' '; i3++)
+                            endReplace = i3;
+                        
+                        
+                        n1 = Double.parseDouble(nextText.substring(startReplace, i2));
+                        n2 = Double.parseDouble(nextText.substring(i2 + 1, endReplace + 1));
+                        
+                        switch (nextText.charAt(i2)) {
+                            case '/':
+                                ans = n1 / n2;
+                                break;
+                            case '+':
+                                ans = n1 + n2;
+                                break;
+                            case '*':
+                                ans = n1 * n2;
+                                break;
+                            default:
+                                ans = n1 - n2;
+                                break;
+                        }
+                        
+                        nextText = nextText.substring(0, startReplace) + ans + nextText.substring(endReplace);
+                        
+                    }
+                }
+                
+                
+                
+                
                 readInput(nextText);
 
             } else if (nextCommand != "" && nextCommand != " " && nextCommand != "  ") {
@@ -340,4 +382,5 @@ class myCanvas extends JPanel {	// This is the custom class used to draw lines o
 
 // Sample procedures
 // to square :size repeat 4 [ fd size rt 90 ] end
-// to grid :size :num repeat num [ repeat num [ repeat 4 [ fd size rt 90 ] rt 90 up fd size down lt 90 ] up bk size lt 90 repeat num [ fd size ] rt 90 down ] end
+    // to flower :size :petals repeat petals [ rt 360/petals square size ] end
+    // to grid :size :num repeat num [ repeat num [ square size rt 90 up fd size down lt 90 ] up bk size lt 90 repeat num [ fd size ] rt 90 down ] end

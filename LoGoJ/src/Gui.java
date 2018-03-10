@@ -123,7 +123,9 @@ public class Gui extends JFrame {
         // This is the main logic loop
         for (int i = 0; i < allComms.size(); i++) {
             String nextCommand = allComms.get(i);	// Gets the next command from allComms
-            if (nextCommand.equals("up"))
+            if (nextCommand.equals("orient"))
+                pen.setOrientation(Double.parseDouble(allComms.get(++i)));
+            else if (nextCommand.equals("up"))
                 pen.setUp(true);
             else if (nextCommand.equals("down"))
                 pen.setUp(false);  
@@ -141,7 +143,7 @@ public class Gui extends JFrame {
             {
                 int cntr = 0;
                 try {
-                    cntr = Integer.parseInt(allComms.get(i + 1));	// This is the number of times the repeat will, well, repeat
+                    cntr = (int)Math.round(Double.parseDouble(allComms.get(i + 1)));	// This is the number of times the repeat will, well, repeat
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, "Format error. See help for details on 'repeat'.");
                 }
@@ -383,4 +385,5 @@ class myCanvas extends JPanel {	// This is the custom class used to draw lines o
 // Sample procedures
 // to square :size repeat 4 [ fd size rt 90 ] end
     // to flower :size :petals repeat petals [ rt 360/petals square size ] end
+        // to garden :size :num :petals repeat num [ repeat num [ flower size petals orient 180 rt 90 up fd size*3 down lt 90 ] up bk size*3 lt 90 repeat num*3 [ fd size ] rt 90 down ] end
     // to grid :size :num repeat num [ repeat num [ square size rt 90 up fd size down lt 90 ] up bk size lt 90 repeat num [ fd size ] rt 90 down ] end

@@ -196,7 +196,7 @@ public class Gui extends JFrame {
 
                 for (int i2 = 0; i2 < numArgs; i2++) // Find and replace args with whatever the user entered in
                 {
-                    nextText = nextText.replaceAll(ps.get(findProcedure(nextCommand)).getArg(i2), allComms.get(i + i2 + 1));	// Find and replace each arg
+                    nextText = nextText.replaceAll(ps.get(findProcedure(nextCommand)).getArg(i2), allComms.get(i + 1));	// Find and replace each arg
                     i++;
                 }
 

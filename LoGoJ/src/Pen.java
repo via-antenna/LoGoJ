@@ -8,13 +8,22 @@ public class Pen {	// This class will be used to draw the lines the program requ
 	private double newOffsetX;
 	private double newOffsetY;
 	private double orientation;	// Note that the orientation of 0 is down and 180 is up
-	
+	private boolean up;
 	public Pen() {
 		offsetX = 400;
 		offsetY = 400;
 		orientation = 180;
+                up = false;
 	}
 	
+        public void setUp(boolean up) {
+            this.up = up;
+        }
+        
+        public boolean getUp() {
+            return up;
+        }
+        
 	public double getOffsetX() {
 		return offsetX;
 	}

@@ -94,10 +94,11 @@ public class Gui extends JFrame {
 
     public void move(ArrayList<String> allComms, double d) {
         // Find the new offsets of the pen using a little trig
-        pen.setNewOffsetX(pen.getOffsetX() + d * Math.sin(Math.toRadians(pen.getOrientation())));
-        pen.setNewOffsetY(pen.getOffsetY() + d * Math.cos(Math.toRadians(pen.getOrientation())));
+        pen.setNewOffsetX(Math.round(pen.getOffsetX() + d * Math.sin(Math.toRadians(pen.getOrientation()))));
+        pen.setNewOffsetY(Math.round(pen.getOffsetY() + d * Math.cos(Math.toRadians(pen.getOrientation()))));
 
-        m1.paintLine(getGraphics(), pen);	// Paints the line from the old to new offsets
+        if (!pen.getUp())   // If pen is not up
+            m1.paintLine(getGraphics(), pen);	// Paints the line from the old to new offsets
         pen.setOffsetX(pen.getNewOffsetX());	// Update offsets
         pen.setOffsetY(pen.getNewOffsetY());
     }
@@ -122,21 +123,21 @@ public class Gui extends JFrame {
         // This is the main logic loop
         for (int i = 0; i < allComms.size(); i++) {
             String nextCommand = allComms.get(i);	// Gets the next command from allComms
-            if (nextCommand.equals("fd")) // If it's fd, move forward a certain number of pixels
-            {
-               move(allComms, Double.parseDouble(allComms.get(++i)));   // Skip the next command (the number of pixels to go forward)
-            } else if (nextCommand.equals("bk")) // Same as fd, but goes backwards
-            {
+            if (nextCommand.equals("up"))
+                pen.setUp(true);
+            else if (nextCommand.equals("down"))
+                pen.setUp(false);  
+            else if (nextCommand.equals("fd")) // If it's fd, move forward a certain number of pixels
+                move(allComms, Double.parseDouble(allComms.get(++i)));   // Skip the next command (the number of pixels to go forward)
+            else if (nextCommand.equals("bk")) // Same as fd, but goes backwards
                 move(allComms, -Double.parseDouble(allComms.get(++i)));
-            } else if (nextCommand.equals("lt")) // Turn left a certain number of degrees
-            {
+            else if (nextCommand.equals("lt")) // Turn left a certain number of degrees
                 turn(allComms, Double.parseDouble(allComms.get(++i)));
                 // Pen orientation will always be between 0 and 359 because this is the only place where it's changed
                 // and at the end its modded by 360 (so if its rt 500 from 0, it'll "spin" and then go to 140)
-            } else if (nextCommand.equals("rt")) // Turn right a certai number of degrees
-            {
+            else if (nextCommand.equals("rt")) // Turn right a certai number of degrees
                 turn(allComms, -Double.parseDouble(allComms.get(++i)));
-            } else if (nextCommand.equals("repeat")) // This will repeat a certain number of times the code that follows it (enclosed by brackets)
+            else if (nextCommand.equals("repeat")) // This will repeat a certain number of times the code that follows it (enclosed by brackets)
             {
                 int cntr = 0;
                 try {
@@ -335,3 +336,8 @@ class myCanvas extends JPanel {	// This is the custom class used to draw lines o
         setBorder(BorderFactory.createLineBorder(Color.black));
     }
 }
+
+
+// Sample procedures
+// to square :size repeat 4 [ fd size rt 90 ] end
+// to grid :size :num repeat num [ repeat num [ repeat 4 [ fd size rt 90 ] rt 90 up fd size down lt 90 ] up bk size lt 90 repeat num [ fd size ] rt 90 down ] end
